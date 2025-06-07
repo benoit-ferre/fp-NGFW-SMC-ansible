@@ -180,7 +180,7 @@ state:
 
 
 import traceback
-from ansible.module_utils.smc_util import ForcepointModuleBase, Cache
+from ansible_collections.cd60.fp_ngfw_smc_galaxy.plugins.module_utils.smc_util import ForcepointModuleBase, Cache
 
 
 try:

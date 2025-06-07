@@ -126,7 +126,7 @@ services:
     }]
 '''
 
-from ansible.module_utils.smc_util import (
+from ansible_collections.cd60.fp_ngfw_smc_galaxy.plugins.module_utils.smc_util import (
     ForcepointModuleBase,
     service_type_dict,
     element_dict_from_obj,
