@@ -303,7 +303,7 @@ state:
   type: dict
 '''
 
-from ansible_collections.cd60.fp_ngfw_smc_galaxy.plugins.module_utils.smc_util import ForcepointModuleBase, Cache
+from ansible_collections.cd60.fp_ngfw_smc.plugins.module_utils.smc_util import ForcepointModuleBase, Cache
 
 try:
     from smc.base.model import lookup_class

@@ -248,7 +248,7 @@ RETURN = '''
 }
 '''
 
-from ansible_collections.cd60.fp_ngfw_smc_galaxy.plugins.module_utils.smc_util import ForcepointModuleBase, format_element
+from ansible_collections.cd60.fp_ngfw_smc.plugins.module_utils.smc_util import ForcepointModuleBase, format_element
 
 
 try:
