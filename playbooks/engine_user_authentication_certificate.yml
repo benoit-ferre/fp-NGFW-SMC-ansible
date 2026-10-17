@@ -1,0 +1,34 @@
+---
+- name: Manage the engine user authentication certificate workflow
+  hosts: localhost
+  gather_facts: false
+
+  tasks:
+    - name: Delete the previous pending certificate request
+      forcepoint.fp_ngfw_smc_ansible.engine_user_authentication_certificate:
+        name: firewall01
+        action: delete_request
+
+    - name: Generate a new certificate request
+      forcepoint.fp_ngfw_smc_ansible.engine_user_authentication_certificate:
+        name: firewall01
+        action: generate_request
+
+    - name: Export the generated certificate request
+      forcepoint.fp_ngfw_smc_ansible.engine_user_authentication_certificate:
+        name: firewall01
+        action: export_request
+      register: user_authentication_csr
+
+    - name: Show how to pass the CSR to a separate signing workflow
+      ansible.builtin.debug:
+        var: user_authentication_csr.csr
+
+    # Run the external signing workflow here or in another playbook/job.
+
+    - name: Import the externally signed certificate
+      forcepoint.fp_ngfw_smc_ansible.engine_user_authentication_certificate:
+        name: firewall01
+        action: import_certificate
+        certificate: "{{ signed_certificate }}"
+      when: signed_certificate is defined
