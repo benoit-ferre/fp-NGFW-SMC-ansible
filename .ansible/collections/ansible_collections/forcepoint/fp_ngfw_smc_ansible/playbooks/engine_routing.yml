@@ -1,0 +1,59 @@
+- name: Engine routing elements
+  collections:
+    - forcepoint.fp_ngfw_smc_ansible
+  hosts: localhost
+  gather_facts: no
+  tasks:
+
+  - name: Add static routing elements to myfw3 4 interface
+    engine_routing:
+      smc_logging:
+        level: 10
+        path: ansible-smc.log
+      name: myfw3
+      static_route:
+        - destination:
+          - name: Any network
+            type: network
+          interface_id: '4'
+          name: myrouter4
+
+  - name: Add BGP routing elements to myfw3 1001 interface
+    engine_routing:
+      smc_logging:
+        level: 10
+        path: ansible-smc.log
+      name: myfw3
+      bgp_peering:
+        - destination:
+          - name: bgppeer2
+            type: external_bgp_peer
+          interface_id: '1001'
+          name: bgppeering
+
+  - name: Add netlink routing elements to myfw3 3.1 interface
+    engine_routing:
+      smc_logging:
+        level: 10
+        path: ansible-smc.log
+      name: myfw3
+      netlink:
+      - destination:
+        - name: host-3.3.3.3
+          type: host
+        interface_id: '3.1'
+        name: netlink-31.31.31.0
+
+  - name: Add OSPF routing elements to myfw3 3.1 interface
+    engine_routing:
+      smc_logging:
+        level: 10
+        path: ansible-smc.log
+      name: myfw3
+      ospfv2_area:
+      - interface_id: '3.1'
+        name: myarea2
+        network: 31.31.31.0/24
+        destination:
+        - name: Default OSPFv2 Interface Settings
+          type: ospfv2_interface_settings

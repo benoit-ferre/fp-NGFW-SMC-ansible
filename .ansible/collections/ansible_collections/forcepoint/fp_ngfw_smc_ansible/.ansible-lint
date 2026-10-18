@@ -1,0 +1,17 @@
+---
+profile: production
+strict: true
+
+exclude_paths:
+  - .cache/
+  - .git/
+  - .tox/
+  - .venv/
+  - build/
+  - dist/
+  - docs/_build/
+
+# Keep the first implementation strict. Any relaxation should be based on
+# reviewed findings and documented here rather than hidden in the CI workflow.
+skip_list: []
+warn_list: []

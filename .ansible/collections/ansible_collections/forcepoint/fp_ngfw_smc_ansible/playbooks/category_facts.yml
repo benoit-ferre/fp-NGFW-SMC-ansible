@@ -1,0 +1,10 @@
+- name: Facts about category
+  collections:
+    - forcepoint.fp_ngfw_smc_ansible
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: Show all categories by name and type
+    category_facts:
+      limit: 5
+#      filter: footag

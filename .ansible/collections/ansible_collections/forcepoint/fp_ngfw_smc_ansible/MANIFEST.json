@@ -1,0 +1,37 @@
+{
+ "collection_info": {
+  "namespace": "forcepoint",
+  "name": "fp_ngfw_smc_ansible",
+  "version": "1.0.8",
+  "authors": [
+   "Forcepoint"
+  ],
+  "readme": "README.md",
+  "tags": [
+   "smc",
+   "forcepoint",
+   "networking",
+   "security",
+   "ngfw",
+   "sdwan"
+  ],
+  "description": "This repository provides Ansible modules for configuration and automation of Forcepoint Next Generation Firewall. It uses smc-python for all operations between the ansible client and the Forcepoint NGFW Management Center.",
+  "license": [
+   "Apache-2.0"
+  ],
+  "license_file": null,
+  "dependencies": {},
+  "repository": "https://github.com/Forcepoint/fp_ngfw_smc_ansible",
+  "documentation": "https://fp_ngfw_smc_ansible.readthedocs.io/en/latest/?badge=latest",
+  "homepage": "https://github.com/Forcepoint/fp_ngfw_smc_ansible",
+  "issues": "https://github.com/Forcepoint/fp_ngfw_smc_ansible/issues"
+ },
+ "file_manifest_file": {
+  "name": "FILES.json",
+  "ftype": "file",
+  "chksum_type": "sha256",
+  "chksum_sha256": "a9ef88651562eca04bed3e8717e86a7b6de3b69e3cc9d6d2a5955d51c10b105f",
+  "format": 1
+ },
+ "format": 1
+}

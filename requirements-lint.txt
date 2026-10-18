@@ -1,0 +1,5 @@
+ansible-lint>=25.9,<27
+black==25.9.0
+isort==7.0.0
+ruff==0.14.1
+tox==4.31.0

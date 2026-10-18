@@ -1,0 +1,58 @@
+[tool.black]
+line-length = 100
+target-version = ["py39"]
+include = "\\.pyi?$"
+extend-exclude = """
+/(
+    \\.git
+  | \\.tox
+  | \\.venv
+  | build
+  | dist
+  | docs/_build
+)/
+"""
+
+[tool.isort]
+profile = "black"
+line_length = 100
+py_version = 39
+known_first_party = ["ansible_collections"]
+skip_glob = [".git/*", ".tox/*", ".venv/*", "build/*", "dist/*", "docs/_build/*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
+exclude = [
+  ".git",
+  ".tox",
+  ".venv",
+  "build",
+  "dist",
+  "docs/_build",
+]
+
+[tool.ruff.lint]
+select = [
+  "E4",
+  "E7",
+  "E9",
+  "F",
+  "W",
+  "I",
+  "B",
+  "C4",
+  "UP",
+  "SIM",
+  "PIE",
+  "RUF",
+]
+ignore = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["ansible_collections"]
+
+[tool.ruff.format]
+quote-style = "single"
+indent-style = "space"
+line-ending = "auto"

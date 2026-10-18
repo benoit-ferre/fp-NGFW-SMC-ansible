@@ -1,0 +1,66 @@
+- name: Firewall Cluster Template
+  collections:
+    - forcepoint.fp_ngfw_smc_ansible
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Create a firewall cluster
+    engine:
+      smc_logging:
+        level: 10
+        path: ansible-smc.log
+      antivirus: false
+      bgp:
+        enabled: false
+        router_id: null
+      cluster_mode: standby
+      primary_mgt: '0'
+      comment: my new firewall
+      default_nat: false
+      domain_server_address:
+      - name: 172.18.1.20
+        type: ipaddress
+      - name: 8.8.8.8
+        type: ipaddress
+      file_reputation: false
+      interfaces:
+        - interface_id: 0
+          interfaces:
+            - auth_request: false
+              cluster_virtual: "2.2.2.1"
+              network_value: "2.2.2.0/24"
+              nodes:
+                - address: "2.2.2.2"
+                  network_value: "2.2.2.0/24"
+                  nodeid: 1
+                  outgoing: false
+                  primary_heartbeat: false
+                  primary_mgt: false
+                - address: "2.2.2.3"
+                  network_value: "2.2.2.0/24"
+                  nodeid: 2
+                  outgoing: false
+                  primary_heartbeat: false
+                  primary_mgt: false
+                - address: "2.2.2.4"
+                  network_value: "2.2.2.0/24"
+                  nodeid: 3
+                  outgoing: false
+                  primary_heartbeat: false
+                  primary_mgt: false
+            - cluster_virtual: "1.1.1.1"
+              network_value: "1.1.1.0/24"
+              nodes:
+                - address: "1.1.1.2"
+                  network_value: "1.1.1.0/24"
+                  nodeid: 1
+                - address: "1.1.1.3"
+                  network_value: "1.1.1.0/24"
+                  nodeid: 2
+                - address: "1.1.1.4"
+                  network_value: "1.1.1.0/24"
+                  nodeid: 3
+          macaddress: "02:02:02:02:02:02"
+          zone_ref: "https://localhost:8082/7.1/elements/interface_zone/88"
+      name: newcluster
+      type: fw_cluster

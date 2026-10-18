@@ -1,0 +1,24 @@
+- name: Facts related to Policy VPN
+  collections:
+    - forcepoint.fp_ngfw_smc_ansible
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  # - name: Retrieve all Policy VPN's
+  #   policy_vpn_facts:
+  
+  # - name: Get a specific Policy VPN details
+  #   policy_vpn_facts:
+  #     filter: mynewvpn
+  
+  - name: Get a specific Policy VPN, and expand specific engines
+    policy_vpn_facts:
+      smc_logging:
+       level: 10
+       path: ansible-smc.log
+      filter: new_policy_vpn
+      # expand:
+      #   - extgw
+      #   - fw2 Primary
+      #   - doodoo - Primary
+      #   - vpn_profile

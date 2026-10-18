@@ -1,0 +1,119 @@
+- name: 
+  collections:
+    - forcepoint.fp_ngfw_smc_ansible
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: Add somerules to simpleanypolicy
+    # This playbook adds some rules to the policy created in playbooks/anypolicy.yml
+    register: result
+    firewall_rule:
+      smc_logging:
+        level: 10
+        path: ansible-smc.log
+      policy: asimpleanypolicy
+      rules:
+      - action:
+        - allow
+        authentication_options:
+          methods: []
+          require_auth: false
+        comment: null
+        connection_tracking:
+          mss_enforced: false
+          mss_enforced_max: 0
+          mss_enforced_min: 0
+          timeout: -1
+        destinations:
+          any: true
+        inspection_options:
+          decrypting: null
+          deep_inspection: null
+          file_filtering: null
+        is_disabled: false
+        log_options:
+          log_accounting_info_mode: false
+          log_closing_mode: true
+          log_level: undefined
+          log_payload_excerpt: false
+          log_payload_record: false
+          log_severity: -1
+        name: newrule1
+        services:
+          application_situation:
+          - 100Bao
+        sources:
+          any: true
+      - action:
+        - allow
+        authentication_options:
+          methods: []
+          require_auth: false
+        comment: null
+        connection_tracking:
+          mss_enforced: false
+          mss_enforced_max: 0
+          mss_enforced_min: 0
+          timeout: -1
+        destinations:
+          any: true
+        services:
+          any: true
+        sources:
+          any: true
+        inspection_options:
+          decrypting: null
+          deep_inspection: null
+          file_filtering: null
+        is_disabled: false
+        log_options:
+          log_accounting_info_mode: false
+          log_closing_mode: true
+          log_level: undefined
+          log_payload_excerpt: false
+          log_payload_record: false
+          log_severity: -1
+        name: newrule2
+      - action:
+        - enforce_vpn
+        authentication_options:
+          methods: []
+          require_auth: false
+        comment: null
+        connection_tracking:
+          mss_enforced: false
+          mss_enforced_max: 0
+          mss_enforced_min: 0
+          timeout: -1
+        destinations:
+          any: true
+        inspection_options:
+          decrypting: null
+          deep_inspection: null
+          file_filtering: null
+        is_disabled: false
+        log_options:
+          log_accounting_info_mode: false
+          log_closing_mode: true
+          log_level: undefined
+          log_payload_excerpt: false
+          log_payload_record: false
+          log_severity: -1
+        mobile_vpn: true
+        name: newrule3
+        services:
+          any: true
+        sources:
+          any: true
+      - action: ['allow']
+        name: newrule4
+        comment: an allow rule
+        source:
+          any: true
+        destination:
+          any: true
+        services:
+          ip_service:
+            - TCP
+        log_options:
+            log_level: stored

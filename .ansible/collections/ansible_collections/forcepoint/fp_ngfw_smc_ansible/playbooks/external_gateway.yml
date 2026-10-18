@@ -1,0 +1,39 @@
+- name: 
+  collections:
+    - forcepoint.fp_ngfw_smc_ansible
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: Create a static IP based external gateway
+    register: result
+    external_gateway:
+      smc_logging:
+        level: 10
+        path: ansible-smc.log
+      external_endpoint:
+      -   address: 33.33.33.41
+          enabled: true
+          name: extgw3 (33.33.33.41)
+          connection_type: 'Active'
+      -   address: 34.34.34.34
+          enabled: true
+          name: endpoint2 (34.34.34.34)
+          connection_type: 'Active'
+      -   address: 44.44.44.44
+          enabled: true
+          name: extgw4 (44.44.44.44)
+          connection_type: 'Standby'
+      -   address: 33.33.33.50
+          enabled: true
+          name: endpoint1 (33.33.33.50)
+          connection_type: 'Aggregate'
+      name: myexternalgateway1
+      vpn_site:
+          group:
+          - group1
+          host:
+          - hosta
+          name: site12a
+          network:
+          - networka
+          - mynetwork2

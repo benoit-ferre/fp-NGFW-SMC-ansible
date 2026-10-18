@@ -1,0 +1,9 @@
+- name: Routing facts about an engine
+  collections:
+    - forcepoint.fp_ngfw_smc_ansible
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: Retrieve engine routes from Plano
+    engine_routing_facts:
+      filter: Plano

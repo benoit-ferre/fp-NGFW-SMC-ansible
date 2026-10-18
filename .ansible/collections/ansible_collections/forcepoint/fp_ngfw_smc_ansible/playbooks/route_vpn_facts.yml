@@ -1,0 +1,40 @@
+- name: Obtain facts about Route VPNs
+  collections:
+    - forcepoint.fp_ngfw_smc_ansible
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: Retrieve all Route VPNs
+    route_vpn_facts:
+      limit: 50
+
+  - name: Retrieve a specific VPN
+    route_vpn_facts:
+      filter: rbvpn
+
+  - name: Retrieve a specific VPN and expand special members
+    route_vpn_facts:
+      smc_logging:
+        level: 10
+        path: ansible-smc.log
+      filter: GRE-Helsinki VPN Gateway-Plano VPN Gateway
+      expand:
+        - rbvpn_tunnel_side_a
+        - rbvpn_tunnel_side_b
+        - vpn_profile_ref
+        - monitoring_group_ref
+
+  - name: Retrieve a specific route VPN and format as playbook YAML
+    register: results
+    route_vpn_facts:
+      smc_logging:
+        level: 10
+        path: ansible-smc.log
+      filter: GRE-Helsinki VPN Gateway-Plano VPN Gateway
+      as_yaml: true
+
+  - name: Write the yaml using a jinja template
+    template: src=templates/facts_yaml.j2 dest=./route_vpn_jinja.yml
+    vars:
+      playbook: route_vpn
+      

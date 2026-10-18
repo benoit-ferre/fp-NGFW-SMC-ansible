@@ -1,0 +1,16 @@
+- name: Upload the policy
+  collections:
+    - forcepoint.fp_ngfw_smc_ansible
+  hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: Upload policy
+    policy_push:
+      smc_logging:
+        level: 10
+        path: ansible-smc.log
+      name: myfw3
+      policy: asimpleanypolicy
+      wait_for_finish: yes
+      max_tries: 10
+      sleep: 3
