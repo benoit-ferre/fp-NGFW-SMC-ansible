@@ -18,8 +18,10 @@ description:
   - Exposes the user authentication certificate operations provided by smc-python.
   - Operations are intentionally atomic so certificate requests can be signed by an
     external signing workflow before the signed certificate is imported.
-  - The module returns certificate request and certificate content directly and does
-    not require controller-side files.
+  - The module returns certificate request and certificate content under a C(content) key
+    and does not require controller-side files.
+  - Export operations return C(content=null) when no certificate request or certificate
+    is available.
 
 version_added: '1.0.9'
 
@@ -32,7 +34,8 @@ options:
   action:
     description:
       - Atomic user authentication certificate operation to perform.
-      - C(export_request) and C(export_certificate) are read-only operations.
+      - C(export_request) and C(export_certificate) are read-only operations and can be used
+        to determine whether a certificate request or certificate is available.
       - C(generate_request) does not delete an existing certificate request implicitly.
     type: str
     required: true
@@ -92,6 +95,12 @@ EXAMPLES = r'''
     action: export_request
   register: user_authentication_csr
 
+- name: Generate a request when none is available
+  forcepoint.fp_ngfw_smc_ansible.engine_user_authentication_certificate:
+    name: firewall01
+    action: generate_request
+  when: user_authentication_csr.csr.content is none
+
 - name: Import the certificate signed by an external CA
   forcepoint.fp_ngfw_smc_ansible.engine_user_authentication_certificate:
     name: firewall01
@@ -119,13 +128,25 @@ action:
   returned: always
   type: str
 csr:
-  description: PEM encoded certificate request.
+  description: Certificate request export result.
   returned: when action is export_request
-  type: str
+  type: dict
+  contains:
+    content:
+      description:
+        - PEM encoded certificate request content.
+        - C(null) when no certificate request is available.
+      type: str
 certificate:
-  description: PEM encoded installed certificate.
+  description: Installed certificate export result.
   returned: when action is export_certificate
-  type: str
+  type: dict
+  contains:
+    content:
+      description:
+        - PEM encoded installed certificate content.
+        - C(null) when no certificate is available.
+      type: str
 msg:
   description: Result returned by smc-python for mutating operations.
   returned: when provided by smc-python
@@ -207,8 +228,8 @@ class ForcepointEngineUserAuthenticationCertificate(ForcepointModuleBase):
 
             self.check_provided_args(engine, method_name)
 
-            if self.check_mode:
-                self.results['changed'] = self.action not in READ_ONLY_ACTIONS
+            if self.check_mode and self.action not in READ_ONLY_ACTIONS:
+                self.results['changed'] = True
                 return self.results
 
             if self.action == 'import_certificate':
@@ -217,9 +238,9 @@ class ForcepointEngineUserAuthenticationCertificate(ForcepointModuleBase):
                 result = method(**self.extra_args)
 
             if self.action == 'export_request':
-                self.results['csr'] = self.normalize_content(result)
+                self.results['csr'] = self.build_content_result(result)
             elif self.action == 'export_certificate':
-                self.results['certificate'] = self.normalize_content(result)
+                self.results['certificate'] = self.build_content_result(result)
             else:
                 self.results['changed'] = True
                 if result is not None:
@@ -240,12 +261,13 @@ class ForcepointEngineUserAuthenticationCertificate(ForcepointModuleBase):
                     'for this operation are %s' % (arg, allowed))
 
     @staticmethod
-    def normalize_content(content):
+    def build_content_result(content):
         if content is None:
-            raise SMCException('The certificate operation returned no content')
+            return {'content': None}
         if isinstance(content, bytes):
-            return content.decode('utf-8')
-        return str(content)
+            content = content.decode('utf-8')
+        content = str(content)
+        return {'content': content if content.strip() else None}
 
 
 def main():
